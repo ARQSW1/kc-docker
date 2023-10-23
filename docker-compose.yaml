@@ -1,0 +1,25 @@
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0
+    command: ["start-dev","--import-realm"]
+    restart: unless-stopped
+    volumes:
+      - ./dev-realm.json:/opt/keycloak/data/import/dev-realm.json
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+    environment:
+      - TZ=America/Buenos_Aires
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=fruta
+      - KC_HEALTH_ENABLED=false
+      - KC_TRANSACTION_XA_ENABLED=false
+      - KC_HOSTNAME_STRICT= false
+      - KC_HTTP_ENABLED = true
+      - KC_OVERRIDE= false
+    networks:
+      - node-network
+networks:
+  node-network:
+    driver: bridge
